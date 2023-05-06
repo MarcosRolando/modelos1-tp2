@@ -1,0 +1,24 @@
+El problema del enunciado nos describe una situación en la cual contamos con una cantidad
+limitada de equipos de distintos tipos que componen diferentes batallones, queriendo
+conseguir la mejor distribución posible de los mismos en las distintas ubicaciones
+a defender contra los incendios. Además, cada batallón cuenta con experiencia únicamente
+en ciertas ubicaciones, lo que limita las opciones de distribución de los mismos.
+
+No todas las ubicaciones son equivalentes. Algunas tienen mayor prioridad que otras,
+viendose reflejado en un puntaje o calificación mayor. El corazón del problema radica entonces
+en cómo conseguir maximizar la calificación total de las ubicaciones defendidas, teniendo en cuentas
+las limitaciones de recursos y experiencia de los batallones.
+
+A priori, el problema no especifica claramente como se procesan las calificaciones de las ubicaciones
+ni los recursos de los batallones. Por lo tanto, se asume que la calificación de cada ubicación
+sólo puede ser contabilizada una única vez en caso de que el acumulado de equipos de los batallones
+asignados a la ubicación cumpla con los requerimientos de esta. En caso de haya un excedente de equipos
+en la ubicación, la calificación provista por la misma no se modificaría.
+
+Analizando la situación resulta evidente que se trata de un problema de optimización combinatoria.
+En particular, se trata de un problema de optimización de asignación, en el cual se busca asignar
+los elementos de un conjunto a otro de manera que se maximice una función objetivo. Deberemos entonces
+determinar qué equipos serán asignados a qué ubicaciones, individualizando así cada posible combinación
+de equipo y ubicación. Luego, deberemos evaluar cada una de estas combinaciones y quedarnos aquellas
+que maximicen la función objetivo, es decir, la calificación total.
+
