@@ -5,6 +5,35 @@
 \usepackage{graphicx}
 \usepackage{enumitem}
 \usepackage{subfiles} % Best loaded last in the preamble
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{xcolor}
+
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+\lstset{style=mystyle}
+
 
 \addto\captionsspanish{\renewcommand{\contentsname}{Tabla de Contenidos}}
 
@@ -42,5 +71,33 @@
 Determinar qué batallones deben asignarse a qué ubicaciones de forma tal
 que se maximice la calificación total dada por la distribución de equipos
 en un intervalo de tiempo dado, respetando las condiciones necesarias del problema.
+
+\section{Resolución por software}
+
+\subsection{Modelo de GLPK}
+
+\lstinputlisting[language=Octave]{resolucion/modelo.mod}
+
+\subsection{Solución obtenida}
+
+\verbatiminput{resolucion/solucion.sol}
+
+\section{Conclusiones}
+
+Podemos observar en la solución del modelo por software que se asignaron los batallones de la siguiente forma:
+
+\begin{enumerate}
+	\item Batallón A: NOA
+	\item Batallón C: NEA
+	\item Batallón D: Patagonia
+	\item Batallón E: Pampeana
+	\item Batallón F: Patagonia
+\end{enumerate}
+
+Como es evidente, el batallón B no se asignó a ninguna ubicación, ya que no habían suficientes equipos de Combate del Fuego y Apoyo Logístico para formarlo.
+
+Es importante notar que el modelo intenta cubrir la mayor cantidad de regiones posibles, para así aumentar la calificación obtenida. La única región con dos batallones es la Patagonia, ya que esto era indispensable para satisfacer los requisitos de la misma, por no haber ningún batallón con al menos 2 equipos de Combate del Fuego y 2 de Apoyo Logístico. Las regiones Norte y Centro no tienen batallones asignados.
+
+En total se obtuvieron 26 puntos de calificación.
 
 \end{document}
