@@ -21,8 +21,6 @@ jobs:
             LATEX_PROJECT_NAME=modelos1-tp2
             USER_ID=$(id -u)
             GROUP_ID=$(id -g)
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new
       
       - name: Compile PDF
         run: ./latx.sh compile
