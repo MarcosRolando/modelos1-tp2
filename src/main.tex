@@ -72,6 +72,125 @@ Determinar qué batallones deben asignarse a qué ubicaciones de forma tal
 que se maximice la calificación total dada por la distribución de equipos
 en un intervalo de tiempo dado, respetando las condiciones necesarias del problema.
 
+\section{Hipótesis y supuestos}
+
+% bullet list
+\begin{itemize}
+\item Un batallón solo puede ser desplegado en una única ubicación.
+\item Un batallón solo puede ser desplegado en aquellas ubicaciones donde ya haya operado, para maximizar la eficacia del mismo.
+\item Una ubicación puede tener cualquier cantidad de batallones asignados, excepto la Patagonia.
+\item Una ubicación podría no tener ningún batallón asignado.
+\item Cualquier batallón que pueda ser desplegado en una ubicación aumenta la calificación de la misma forma según corresponda por ubicación (es indistinto del batallón asignado).
+\item Puede haber cualquier cantidad de batallones que no tengan una ubicación asignada.
+\item Los equipos de los batallones que estén asignados a la misma ubicación se suman para calcular el total de cada equipo.
+\item La calificación de una ubicación solo se suma una única vez dado que los equipos totales de los batallones asignados a la ubicación igualan o superan el requerimiento de la misma.
+\item El excedente de equipos asignados a una ubicación no aporta calificación extra ni tampoco la disminuye.
+\end{itemize}
+
+\section{Modelo}
+
+\subsection{Variables}
+
+Este problema puede modelarse mediante las siguientes variables.
+
+\begin{itemize}
+    \item $X_{ij}$: 1 si el batallon i se desplegó en la ubicación j, 0 en caso contrario, donde i pertenece al conjunto {A, B, C, D, E, F} y j pertenece al conjunto {NOA, NORTE, NEA, Centro, Pampeana, Patagonia}, ambos tomando valores del 1 al 6 correspondiendo cada valor al elemento del conjunto en la posición indicada por el valor de i o j. Por ejemplo, i = 3 corresponde al batallón C y j = 2 corresponde a la ubicación NORTE. 
+    \item $U_{j}$: 1 si los equipos totales de los batallones asignados a la ubicación j cumplen el requerimiento de la misma, 0 en caso contrario, donde j pertenece al conjunto {NOA, NORTE, NEA, Centro, Pampeana, Patagonia}, tomando valores del 1 al 6 correspondiendo cada valor al elemento del conjunto en la posición indicada por el mismo. Por ejemplo, j = 3 corresponde a la ubicación de NEA. 
+\end{itemize}
+
+\subsection{Constantes}
+
+\begin{itemize}
+    \item \textbf{$C_{j}$}: Calificación de la ubicación j donde j pertenece al conjunto {NOA, NORTE, NEA, Centro, Pampeana, Patagonia}, tomando valores del 1 al 6 correspondiendo cada valor al elemento del conjunto en la posición indicada por el mismo. Por ejemplo, j = 3 corresponde a la calificación de NEA.
+    \item \textbf{$CF_{i}$}: Costo de equipo de combate de fuego para el batallón i (misma lógica que antes sobre el batallón que representa).
+    \item \textbf{$AL_{i}$}: Costo de equipo de apoyo logístico para el batallón i (misma lógica que antes sobre qué batallón representa).
+    \item \textbf{$CF`_{j}$}: Requerimiento de equipo de combate de fuego para la ubicación j (misma lógica que antes sobre la ubicación que representa).
+    \item \textbf{$AL`_{j}$}: Requerimiento de equipo de apoyo logístico para la ubicación j (misma lógica que antes sobre la ubicación que representa).
+    \item \textbf{$CF$}: Cantidad de Equipos de Combate del Fuego disponibles.
+    \item \textbf{$AL$}: Cantidad de Equipos de Apoyo Logístico disponibles.
+\end{itemize}
+
+\subsection{Restricciones}
+
+A continuación se enumeran las restricciones correspondientes al modelo.
+
+\subsubsection{Ubicaciones por batallón}
+
+Restricciones de ubicaciones donde no es posible desplegar a cada batallón (por no tener experiencia).
+
+\begin{itemize}
+    \item $X_{13} = X_{14} = X_{16} = 0$
+    \item $X_{21} = X_{22} = X_{25} = X_{26} = 0$
+    \item $X_{31} = X_{32} = X_{34} = X_{36} = 0$
+    \item $X_{43} = X_{44} = 0$
+    \item $X_{52} = X_{53} = X_{56} = 0$
+    \item $X_{62} = X_{64} = X_{65} = 0$
+\end{itemize}
+
+\subsubsection{Batallones sin repetir}
+
+Restricciones para evitar que un batallón pueda ser desplegado en más de una ubicación (pero no obliga a que se desplieguen).
+
+\begin{itemize}
+    \item $\sum_{j=1}^{6} X_{1j} \leq 1$
+    \item $\sum_{j=1}^{6} X_{2j} \leq 1$
+    \item $\sum_{j=1}^{6} X_{3j} \leq 1$
+    \item $\sum_{j=1}^{6} X_{4j} \leq 1$
+    \item $\sum_{j=1}^{6} X_{5j} \leq 1$
+    \item $\sum_{j=1}^{6} X_{6j} \leq 1$
+\end{itemize}
+
+\subsubsection{Batallones con única ubicación}
+
+Restricciones que evitan que los batallones A y D se desplieguen en la misma ubicación.
+
+\begin{itemize}
+    \item $X_{11} + X_{41} \leq 1$
+    \item $X_{12} + X_{42} \leq 1$
+    \item $X_{12} + X_{43} \leq 1$
+    \item $X_{14} + X_{44} \leq 1$
+    \item $X_{15} + X_{45} \leq 1$
+    \item $X_{16} + X_{46} \leq 1$
+\end{itemize}
+
+\subsubsection{Patagonia}
+
+Restricción que evita que en la patagonia haya más de 3 batallones.
+
+\begin{itemize}
+    \item $\sum_{i=1}^{6} X_{i6} \leq 3$
+\end{itemize}
+
+\subsubsection{Miembros de batallón}
+
+Restricciones que limitan la cantidad miembros para formar los batallones a desplegar.
+
+\begin{itemize}
+    \item $ \sum_{i=1}^{6}\sum_{j=1}^{6} X_{ij} * CF_{i} \leq CF$
+    \item $ \sum_{i=1}^{6}\sum_{j=1}^{6} X_{ij} * AL_{i} \leq AL$
+\end{itemize}
+
+\subsubsection{$U_{i} => X_{ij}$}
+
+Restricción que linkea las Uj con los Xij.
+
+\begin{itemize}
+    \item $ \frac{1}{6} * \sum_{i=1}^{6} X_{ij} \leq U_{j} \leq \sum_{i=1}^{6} X_{ij}$
+\end{itemize}
+
+\subsubsection{Cumpliendo requerimientos}
+
+Restricciones que obliga que una ubicación tenga asignada batallones de forma que cumpla con los requerimientos de equipos de la misma-
+
+\begin{itemize}
+    \item $ CF`_{j} * U_{j} \leq \sum_{i=1}^{6} CF_{i} * X_{ij}$
+    \item $ AL`_{j} * U_{j} \leq \sum_{i=1}^{6} AL_{i} * X_{ij}$
+\end{itemize}
+
+\subsection{Funcional}
+
+$Z_{max} = \sum_{j=1}^{6} C_{j} * U_{j}$
+
 \section{Resolución por software}
 
 \subsection{Modelo de GLPK}
@@ -99,5 +218,4 @@ Como es evidente, el batallón B no se asignó a ninguna ubicación, ya que no h
 Es importante notar que el modelo intenta cubrir la mayor cantidad de regiones posibles, para así aumentar la calificación obtenida. La única región con dos batallones es la Patagonia, ya que esto era indispensable para satisfacer los requisitos de la misma, por no haber ningún batallón con al menos 2 equipos de Combate del Fuego y 2 de Apoyo Logístico. Las regiones Norte y Centro no tienen batallones asignados.
 
 En total se obtuvieron 26 puntos de calificación.
-
 \end{document}
