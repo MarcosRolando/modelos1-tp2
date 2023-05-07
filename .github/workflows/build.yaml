@@ -19,8 +19,8 @@ jobs:
           tags: modelos1-tp2:latest
           build-args: |
             LATEX_PROJECT_NAME=modelos1-tp2
-            USER_ID=$(id -u)
-            GROUP_ID=$(id -g)
+            USER_ID=1000
+            GROUP_ID=1000
       
       - name: Compile PDF
         run: ./latx.sh compile
