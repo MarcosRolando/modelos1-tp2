@@ -19,8 +19,8 @@ jobs:
           tags: modelos1-tp2:latest
           build-args: |
             LATEX_PROJECT_NAME=modelos1-tp2
-            USER_ID=1000
-            GROUP_ID=1000
+            USER_ID=0
+            GROUP_ID=0
       
       - name: Create target folder
         run: mkdir -p target
