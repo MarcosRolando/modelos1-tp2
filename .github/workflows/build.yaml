@@ -22,6 +22,9 @@ jobs:
             USER_ID=1000
             GROUP_ID=1000
       
+      - name: Create target folder
+        run: mkdir -p target
+
       - name: Compile PDF
         run: ./latx.sh compile
 
