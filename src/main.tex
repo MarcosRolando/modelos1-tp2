@@ -94,14 +94,14 @@ en un intervalo de tiempo dado, respetando las condiciones necesarias del proble
 Este problema puede modelarse mediante las siguientes variables.
 
 \begin{itemize}
-    \item $X_{ij}$: 1 si el batallon i se desplegó en la ubicación j, 0 en caso contrario, donde i pertenece al conjunto {A, B, C, D, E, F} y j pertenece al conjunto {NOA, NORTE, NEA, Centro, Pampeana, Patagonia}, ambos tomando valores del 1 al 6 correspondiendo cada valor al elemento del conjunto en la posición indicada por el valor de i o j. Por ejemplo, i = 3 corresponde al batallón C y j = 2 corresponde a la ubicación NORTE. 
-    \item $U_{j}$: 1 si los equipos totales de los batallones asignados a la ubicación j cumplen el requerimiento de la misma, 0 en caso contrario, donde j pertenece al conjunto {NOA, NORTE, NEA, Centro, Pampeana, Patagonia}, tomando valores del 1 al 6 correspondiendo cada valor al elemento del conjunto en la posición indicada por el mismo. Por ejemplo, j = 3 corresponde a la ubicación de NEA. 
+    \item $X_{ij}$: 1 si el batallon i se desplegó en la ubicación j, 0 en caso contrario, donde i pertenece al conjunto \{A, B, C, D, E, F\} y j pertenece al conjunto \{NOA, NORTE, NEA, Centro, Pampeana, Patagonia\}, ambos tomando valores del 1 al 6 correspondiendo cada valor al elemento del conjunto en la posición indicada por el valor de i o j. Por ejemplo, i = 3 corresponde al batallón C y j = 2 corresponde a la ubicación NORTE. 
+    \item $U_{j}$: 1 si los equipos totales de los batallones asignados a la ubicación j cumplen el requerimiento de la misma, 0 en caso contrario, donde j pertenece al conjunto \{NOA, NORTE, NEA, Centro, Pampeana, Patagonia\}, tomando valores del 1 al 6 correspondiendo cada valor al elemento del conjunto en la posición indicada por el mismo. Por ejemplo, j = 3 corresponde a la ubicación de NEA. 
 \end{itemize}
 
 \subsection{Constantes}
 
 \begin{itemize}
-    \item \textbf{$C_{j}$}: Calificación de la ubicación j donde j pertenece al conjunto {NOA, NORTE, NEA, Centro, Pampeana, Patagonia}, tomando valores del 1 al 6 correspondiendo cada valor al elemento del conjunto en la posición indicada por el mismo. Por ejemplo, j = 3 corresponde a la calificación de NEA.
+    \item \textbf{$C_{j}$}: Calificación de la ubicación j donde j pertenece al conjunto \{NOA, NORTE, NEA, Centro, Pampeana, Patagonia\}, tomando valores del 1 al 6 correspondiendo cada valor al elemento del conjunto en la posición indicada por el mismo. Por ejemplo, j = 3 corresponde a la calificación de NEA.
     \item \textbf{$CF_{i}$}: Costo de equipo de combate de fuego para el batallón i (misma lógica que antes sobre el batallón que representa).
     \item \textbf{$AL_{i}$}: Costo de equipo de apoyo logístico para el batallón i (misma lógica que antes sobre qué batallón representa).
     \item \textbf{$CF`_{j}$}: Requerimiento de equipo de combate de fuego para la ubicación j (misma lógica que antes sobre la ubicación que representa).
@@ -132,12 +132,7 @@ Restricciones de ubicaciones donde no es posible desplegar a cada batallón (por
 Restricciones para evitar que un batallón pueda ser desplegado en más de una ubicación (pero no obliga a que se desplieguen).
 
 \begin{itemize}
-    \item $\sum_{j=1}^{6} X_{1j} \leq 1$
-    \item $\sum_{j=1}^{6} X_{2j} \leq 1$
-    \item $\sum_{j=1}^{6} X_{3j} \leq 1$
-    \item $\sum_{j=1}^{6} X_{4j} \leq 1$
-    \item $\sum_{j=1}^{6} X_{5j} \leq 1$
-    \item $\sum_{j=1}^{6} X_{6j} \leq 1$
+    \item $\sum_{j=1}^{6} X_{ij} \leq 1$, $i \in \{1,2,3,4,5,6\} $
 \end{itemize}
 
 \subsubsection{Batallones con única ubicación}
@@ -145,12 +140,7 @@ Restricciones para evitar que un batallón pueda ser desplegado en más de una u
 Restricciones que evitan que los batallones A y D se desplieguen en la misma ubicación.
 
 \begin{itemize}
-    \item $X_{11} + X_{41} \leq 1$
-    \item $X_{12} + X_{42} \leq 1$
-    \item $X_{12} + X_{43} \leq 1$
-    \item $X_{14} + X_{44} \leq 1$
-    \item $X_{15} + X_{45} \leq 1$
-    \item $X_{16} + X_{46} \leq 1$
+    \item $X_{1j} + X_{4j} \leq 1$, $j \in \{1,2,3,4,5,6\}$
 \end{itemize}
 
 \subsubsection{Patagonia}
@@ -166,30 +156,30 @@ Restricción que evita que en la patagonia haya más de 3 batallones.
 Restricciones que limitan la cantidad miembros para formar los batallones a desplegar.
 
 \begin{itemize}
-    \item $ \sum_{i=1}^{6}\sum_{j=1}^{6} X_{ij} * CF_{i} \leq CF$
-    \item $ \sum_{i=1}^{6}\sum_{j=1}^{6} X_{ij} * AL_{i} \leq AL$
+    \item $ \sum_{i=1}^{6}\sum_{j=1}^{6} X_{ij} \cdot CF_{i} \leq CF$
+    \item $ \sum_{i=1}^{6}\sum_{j=1}^{6} X_{ij} \cdot AL_{i} \leq AL$
 \end{itemize}
 
 \subsubsection{$U_{i} => X_{ij}$}
 
-Restricción que linkea las Uj con los Xij.
+Restricción que vincula las Uj con los Xij.
 
 \begin{itemize}
-    \item $ \frac{1}{6} * \sum_{i=1}^{6} X_{ij} \leq U_{j} \leq \sum_{i=1}^{6} X_{ij}$
+    \item $ \frac{1}{6} \cdot \sum_{i=1}^{6} X_{ij} \leq U_{j} \leq \sum_{i=1}^{6} X_{ij}$, $j \in \{1,2,3,4,5,6\}$
 \end{itemize}
 
 \subsubsection{Cumpliendo requerimientos}
 
-Restricciones que obliga que una ubicación tenga asignada batallones de forma que cumpla con los requerimientos de equipos de la misma-
+Restricciones que obligan que una ubicación tenga asignada batallones de forma que cumpla con los requerimientos de equipos de la misma.
 
 \begin{itemize}
-    \item $ CF`_{j} * U_{j} \leq \sum_{i=1}^{6} CF_{i} * X_{ij}$
-    \item $ AL`_{j} * U_{j} \leq \sum_{i=1}^{6} AL_{i} * X_{ij}$
+    \item $ CF`_{j} \cdot U_{j} \leq \sum_{i=1}^{6} CF_{i} \cdot X_{ij}$, $j \in \{1,2,3,4,5,6\}$
+    \item $ AL`_{j} \cdot U_{j} \leq \sum_{i=1}^{6} AL_{i} \cdot X_{ij}$, $j \in \{1,2,3,4,5,6\}$
 \end{itemize}
 
 \subsection{Funcional}
 
-$Z_{max} = \sum_{j=1}^{6} C_{j} * U_{j}$
+$Z_{max} = \sum_{j=1}^{6} C_{j} \cdot U_{j}$
 
 \section{Resolución por software}
 
